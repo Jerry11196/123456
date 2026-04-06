@@ -8,228 +8,98 @@
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/echarts-wordcloud@2.1.0/dist/echarts-wordcloud.min.js"></script>
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-  }
-  body {
-    background: #f1f5f9;
-    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Roboto, sans-serif;
-    padding: 16px 12px;
-    color: #0a2540;
-  }
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    background: #ffffff;
-    border-radius: 1.5rem;
-    box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    padding: 1.5rem 1.2rem 2rem;
-  }
-  @media (min-width: 768px) {
-    body { padding: 32px 20px; }
-    .container { padding: 2rem 2rem 3rem; border-radius: 2rem; }
-  }
-  .hero {
-    margin-bottom: 1.5rem;
-    border-bottom: 2px solid #e2edf7;
-    padding-bottom: 1rem;
-  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { background: #f1f5f9; font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Roboto, sans-serif; padding: 16px 12px; color: #0a2540; }
+  .container { max-width: 1200px; margin: 0 auto; background: #ffffff; border-radius: 1.5rem; box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1); overflow: hidden; padding: 1.5rem 1.2rem 2rem; }
+  @media (min-width: 768px) { body { padding: 32px 20px; } .container { padding: 2rem 2rem 3rem; border-radius: 2rem; } }
+  .hero { margin-bottom: 1.5rem; border-bottom: 2px solid #e2edf7; padding-bottom: 1rem; }
   @media (min-width: 768px) { .hero { margin-bottom: 2rem; padding-bottom: 1.2rem; } }
-  .main-title {
-    font-size: 1.6rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, #1f5e9e, #2c7cb6);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  .main-title i {
-    background: #eef4fc;
-    padding: 8px;
-    border-radius: 50%;
-    font-size: 1.3rem;
-    color: #2c7cb6;
-  }
-  @media (min-width: 768px) {
-    .main-title { font-size: 2.4rem; gap: 14px; }
-    .main-title i { padding: 12px; font-size: 1.8rem; }
-  }
+  .main-title { font-size: 1.6rem; font-weight: 800; background: linear-gradient(135deg, #1f5e9e, #2c7cb6); background-clip: text; -webkit-background-clip: text; color: transparent; display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .main-title i { background: #eef4fc; padding: 8px; border-radius: 50%; font-size: 1.3rem; color: #2c7cb6; }
+  @media (min-width: 768px) { .main-title { font-size: 2.4rem; gap: 14px; } .main-title i { padding: 12px; font-size: 1.8rem; } }
 
-  /* ========== 核心：标签栏样式 ========== */
-  .tab-nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    background: #f5f5f5;
-    padding: 8px 8px 0;
-    border-radius: 8px 8px 0 0;
-    border-bottom: 1px solid #e0e0e0;
-    margin-bottom: 0;
-  }
-  .tab-item {
-    padding: 10px 18px;
-    background: #cccccc;
-    color: #333333;
-    font-weight: 500;
-    font-size: 0.9rem;
-    border-radius: 8px 8px 0 0;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: 1px solid #e0e0e0;
-    border-bottom: none;
-    white-space: nowrap;
-  }
-  .tab-item.active {
-    background: #73c990;
-    color: #ffffff;
-    border-color: #73c990;
-  }
-  .tab-item:hover {
-    background: #b8b8b8;
-  }
-  .tab-item.active:hover {
-    background: #66b882;
-  }
+  /* 选项卡样式 */
+  .tab-nav { display: flex; flex-wrap: wrap; gap: 4px; background: #f5f7fb; padding: 8px 8px 0; border-radius: 12px 12px 0 0; border-bottom: 1px solid #e0e8f0; margin-bottom: 0; }
+  .tab-item { padding: 10px 18px; background: #e8edf3; color: #4a627a; font-weight: 500; font-size: 0.85rem; border-radius: 10px 10px 0 0; cursor: pointer; transition: all 0.25s ease; white-space: nowrap; border: 1px solid #dce4ec; border-bottom: none; }
+  .tab-item.active { background: #2c7cb6; color: #ffffff; border-color: #2c7cb6; }
+  .tab-item:hover:not(.active) { background: #dce4ec; }
+  @media (max-width: 640px) { .tab-item { padding: 6px 12px; font-size: 0.75rem; } }
 
-  /* ========== 内容容器样式 ========== */
-  .tab-content-container {
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-top: none;
-    border-radius: 0 0 8px 8px;
-    padding: 1.5rem;
-  }
-  .tab-content {
-    display: none;
-    animation: fadeIn 0.3s ease;
-  }
-  .tab-content.active {
-    display: block;
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
+  .tab-content-container { background: #ffffff; border: 1px solid #e0e8f0; border-top: none; border-radius: 0 0 12px 12px; padding: 1.2rem; }
+  .tab-content { display: none; animation: fadeIn 0.25s ease; }
+  .tab-content.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-  .section-title {
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border-left: 5px solid #2c7cb6;
-    padding-left: 14px;
-    color: #1a4b76;
-  }
-  .section-title i {
-    font-size: 1.2rem;
-    color: #2c7cb6;
-  }
-  @media (min-width: 768px) {
-    .section-title { font-size: 1.7rem; margin-bottom: 1.2rem; gap: 10px; border-left-width: 6px; padding-left: 20px; }
-    .section-title i { font-size: 1.5rem; }
-  }
-  .chart-card {
-    background: #fefefe;
-    border-radius: 1rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.05);
-    margin-bottom: 1rem;
-    border: 1px solid #e9f0f5;
-    overflow: hidden;
-    padding: 0.5rem 0.25rem 0.1rem 0.25rem;
-  }
-  @media (min-width: 768px) {
-    .chart-card { border-radius: 1.5rem; margin-bottom: 1.5rem; padding: 0.75rem 0.5rem 0.2rem 0.5rem; }
-  }
+  .section-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; border-left: 5px solid #2c7cb6; padding-left: 14px; color: #1a4b76; }
+  .section-title i { font-size: 1.2rem; color: #2c7cb6; }
+  @media (min-width: 768px) { .section-title { font-size: 1.7rem; margin-bottom: 1.2rem; gap: 10px; border-left-width: 6px; padding-left: 20px; } .section-title i { font-size: 1.5rem; } }
+  
+  .chart-card { background: #fefefe; border-radius: 1rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.05); margin-bottom: 1rem; border: 1px solid #e9f0f5; overflow: hidden; padding: 0.5rem 0.25rem 0.1rem 0.25rem; position: relative; }
+  @media (min-width: 768px) { .chart-card { border-radius: 1.5rem; margin-bottom: 1.5rem; padding: 0.75rem 0.5rem 0.2rem 0.5rem; } }
   .chart-box { width: 100%; height: 280px; }
   @media (min-width: 768px) { .chart-box { height: 360px; } }
   #heatmap { height: 320px; }
   @media (min-width: 768px) { #heatmap { height: 420px; } }
   #wordCloud { height: 300px; }
   @media (min-width: 768px) { #wordCloud { height: 400px; } }
-  .inline-flex-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    align-items: center;
-    margin: 12px 0 10px;
-  }
+  
+  /* 图表内部数据来源样式 - 改为静态标注 */
+  .data-source { text-align: right; font-size: 0.65rem; color: #8ba0b0; margin-top: 4px; padding-right: 8px; }
+  
+  .inline-flex-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 12px 0 10px; }
   @media (min-width: 768px) { .inline-flex-row { gap: 20px; margin: 15px 0 10px; } }
-  .text-card {
-    background: #f8fafd;
-    border-radius: 1rem;
-    padding: 1rem 1.2rem;
-    border: 1px solid #dee9f2;
-    font-size: 0.9rem;
-    line-height: 1.65;
-    color: #1f3e5c;
-    margin: 0.8rem 0;
-  }
-  @media (min-width: 768px) {
-    .text-card { border-radius: 1.5rem; padding: 1.5rem 2rem; font-size: 1rem; line-height: 1.75; margin: 1rem 0; }
-  }
+  .text-card { background: #f8fafd; border-radius: 1rem; padding: 1rem 1.2rem; border: 1px solid #dee9f2; font-size: 0.9rem; line-height: 1.65; color: #1f3e5c; margin: 0.8rem 0; }
+  @media (min-width: 768px) { .text-card { border-radius: 1.5rem; padding: 1.5rem 2rem; font-size: 1rem; line-height: 1.75; margin: 1rem 0; } }
   .text-card p { margin-bottom: 0.6rem; }
   .text-card p:last-child { margin-bottom: 0; }
-  .badge {
-    background: #eef2fa;
-    padding: 4px 12px;
-    border-radius: 40px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: #2c7cb6;
-    display: inline-block;
-  }
+  .badge { background: #eef2fa; padding: 4px 12px; border-radius: 40px; font-size: 0.75rem; font-weight: 500; color: #2c7cb6; display: inline-block; }
   @media (min-width: 768px) { .badge { padding: 4px 14px; font-size: 0.8rem; } }
-  button, select {
-    background: white;
-    border: 1px solid #cbdde9;
-    padding: 6px 14px;
-    border-radius: 30px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: 0.2s;
-    font-size: 0.8rem;
-  }
+  button, select { background: white; border: 1px solid #cbdde9; padding: 6px 14px; border-radius: 30px; font-weight: 500; cursor: pointer; transition: 0.2s; font-size: 0.8rem; }
   @media (min-width: 768px) { button, select { padding: 8px 20px; font-size: 0.85rem; } }
   button.active { background: #2c7cb6; color: white; border-color: #2c7cb6; }
   button:hover { background: #e2edf9; transform: translateY(-1px); }
   select { background: #fff; cursor: pointer; }
-  .two-columns {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
+  .two-columns { display: flex; flex-wrap: wrap; gap: 16px; }
   .two-columns > div { flex: 1; min-width: 200px; }
   @media (min-width: 640px) { .two-columns { gap: 20px; } }
-  .ref-grid {
-    background: #f1f6fc;
+  
+  /* iframe 容器样式 - 双端完美适配 */
+  .iframe-wrapper {
+    margin: 1.2rem 0;
+    text-align: center;
+    overflow: hidden;
+    background: #f9fbfd;
     border-radius: 1rem;
-    padding: 1rem 1.2rem;
-    margin-top: 2rem;
+    padding: 0.75rem;
+    border: 1px solid #e9f0f5;
   }
+  .iframe-ratio-box {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 75%;
+  }
+  .iframe-ratio-box iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border: none;
+  }
+  .img-caption { font-size: 0.75rem; text-align: center; color: #5f7f9a; margin-top: 6px; margin-bottom: 6px; }
+  
+  /* 数据来源样式 */
+  .ref-grid { background: #f1f6fc; border-radius: 1rem; padding: 1rem 1.2rem; margin-top: 2rem; }
   @media (min-width: 768px) { .ref-grid { border-radius: 1.5rem; padding: 1.5rem 2rem; margin-top: 2.5rem; } }
   .ref-grid h3 { margin-bottom: 0.8rem; font-weight: 700; font-size: 1.1rem; }
   @media (min-width: 768px) { .ref-grid h3 { margin-bottom: 1rem; font-size: 1.2rem; } }
   .ref-list { list-style: none; font-size: 0.75rem; line-height: 1.5; }
   @media (min-width: 768px) { .ref-list { font-size: 0.85rem; line-height: 1.6; } }
-  .ref-list li {
-    margin-bottom: 0.8rem;
-    padding-left: 1.2rem;
-    text-indent: -1.2rem;
-    word-break: break-all;
-  }
-  @media (min-width: 768px) {
-    .ref-list li { margin-bottom: 1rem; padding-left: 1.5rem; text-indent: -1.5rem; }
-  }
+  .ref-list li { margin-bottom: 0.8rem; padding-left: 1.2rem; text-indent: -1.2rem; word-break: break-all; }
+  @media (min-width: 768px) { .ref-list li { margin-bottom: 1rem; padding-left: 1.5rem; text-indent: -1.5rem; } }
   .ref-list li a { color: #2c7cb6; text-decoration: none; word-break: break-all; }
   .ref-list li a:hover { text-decoration: underline; }
   img, canvas, iframe { max-width: 100%; }
@@ -237,6 +107,14 @@
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: #e2edf2; border-radius: 10px; }
   ::-webkit-scrollbar-thumb { background: #2c7cb6; border-radius: 10px; }
+  .hr-light { margin: 0.8rem 0; border: 0; height: 1px; background: #e2edf5; }
+  .team-info { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #dee6ef; text-align: right; font-size: 0.8rem; color: #4a6f8f; }
+  
+  /* 进度条样式（动因列表用） */
+  .progress-item { margin-bottom: 14px; }
+  .progress-label { display: flex; justify-content: space-between; flex-wrap: wrap; font-weight: 500; margin-bottom: 6px; font-size: 0.85rem; }
+  .progress-bar-bg { background: #e2eaf5; border-radius: 20px; overflow: hidden; }
+  .progress-fill { background: #2c7cb6; height: 26px; line-height: 26px; padding-left: 8px; color: white; font-size: 0.7rem; border-radius: 20px; transition: width 0.2s; }
 </style>
 </head>
 <body>
@@ -250,41 +128,64 @@
     <div class="tab-item" data-tab="tab2">② 趋势背景</div>
     <div class="tab-item" data-tab="tab3">③ 人群画像</div>
     <div class="tab-item" data-tab="tab4">④ 动因深挖</div>
-    <div class="tab-item" data-tab="tab5">⑤ 决策建议</div>
+    <div class="tab-item" data-tab="tab5">⑤ 未就业原因</div>
     <div class="tab-item" data-tab="tab6">⑥ 择业关注</div>
-    <div class="tab-item" data-tab="tab7">⑦ 未就业原因</div>
-    <div class="tab-item" data-tab="tab8">参考文献</div>
+    <div class="tab-item" data-tab="tab7">⑦ 决策建议</div>
+    <div class="tab-item" data-tab="tab8">数据来源</div>
   </div>
 
   <div class="tab-content-container">
+    <!-- 板块1：概念界定 -->
     <div class="tab-content active" id="tab1">
       <div class="section-title"><i class="fas fa-compass"></i> ① 是什么 · 慢就业概念界定</div>
       <div class="text-card">
-        <p>本次调查将“慢就业”界定为毕业后主动选择延缓进入全职工作的行为，既包含为考研、考公或职业培训做准备，也包括创业筹备与间隔年的探索。这是一种以时间换取更好匹配与更高竞争力的策略，而非对就业的放弃。</p>
-        <p>2018年《中国青年报》调查显示，72.9%的受访者周围有“慢就业”的大学生，表明这一现象早在数年前就已进入公众视野。</p>
+        <p>本次调查将“慢就业”界定为毕业后主动选择延缓进入全职工作的行为，既包含为考研、考公或职业培训做准备，也包括创业筹备与间隔年的探索。这是一种以时间换取更好匹配与更高竞争力的策略，而非对就业的放弃。毕业人数每年都在增加，就业形势严峻，那么就业压力也就增大了，这也让更多人选择继续学习深造。拿镝数聚收集的2020和2021本科应届毕业生就业去向占比就可以看出，说明高校毕业生也在寻求更多出路。</p>
+        <p>2018年河南教育新闻网调查显示，72.9%的受访者周围有“慢就业”的大学生，表明这一现象早在数年前就已进入公众视野。</p>
         <span class="badge"><i class="far fa-lightbulb"></i> 核心特征：主动规划、目标驱动、缓冲过渡</span>
       </div>
     </div>
 
+    <!-- 板块2：趋势背景 -->
     <div class="tab-content" id="tab2">
       <div class="section-title"><i class="fas fa-chart-line"></i> ② 趋势与宏观背景</div>
       <div class="chart-card">
         <div id="gradsChart" class="chart-box"></div>
+        <div class="data-source"><i class="far fa-newspaper"></i> 数据来源：教育部（2020-2026届高校毕业生规模）</div>
       </div>
       <div class="chart-card">
         <div id="trendChart" class="chart-box"></div>
+        <div class="data-source"><i class="far fa-newspaper"></i> 数据来源：智联招聘《2021-2024大学生就业力调研报告》</div>
       </div>
       <div class="text-card">
         <p><strong>规模持续扩大：</strong>据教育部数据，2026届高校毕业生预计达1270万人，同比增长48万。近六年毕业生累计增长超45%，“僧多粥少”现象凸显，编制岗位增速未能同步。</p>
         <p><strong>慢就业比例攀升：</strong>智联招聘数据显示，2021-2024年慢就业比例从12.8%持续上升至19.1%，累计上升约6.3个百分点。供需错配与择业理性共同促成了慢就业常态化。</p>
+        <p><strong>考研考公热潮：</strong>随着每年大学毕业生人数的增加，考研考公的人数也同样在增加。</p>
       </div>
+      <!-- 嵌入图表：考研考公人数变化趋势 -->
+      <div class="iframe-wrapper">
+        <div class="iframe-ratio-box">
+          <iframe src="https://dycharts.com/xshow/index.html?id=c_e5b1cd6a0182983355ef18ece63603ba" frameborder="0" scrolling="no"></iframe>
+        </div>
+      </div>
+      <div class="img-caption">数据来源：镝数聚 · 考研考公人数变化趋势（交互图表）</div>
     </div>
 
+    <!-- 板块3：人群画像 -->
     <div class="tab-content" id="tab3">
       <div class="section-title"><i class="fas fa-users"></i> ③ 人群画像 · 性别与专业差异</div>
       <div class="two-columns">
-        <div><div id="genderPie" class="chart-box" style="height: 280px;"></div></div>
-        <div><div id="genderBar" class="chart-box" style="height: 280px;"></div></div>
+        <div>
+          <div class="chart-card" style="margin-bottom:0;">
+            <div id="genderPie" class="chart-box" style="height: 280px;"></div>
+            <div class="data-source"><i class="far fa-newspaper"></i> 数据来源：问卷调查</div>
+          </div>
+        </div>
+        <div>
+          <div class="chart-card" style="margin-bottom:0;">
+            <div id="genderBar" class="chart-box" style="height: 280px;"></div>
+            <div class="data-source"><i class="far fa-newspaper"></i> 数据来源：问卷调查</div>
+          </div>
+        </div>
       </div>
       <div class="inline-flex-row">
         <i class="fas fa-graduation-cap"></i> <span style="font-weight:500;">专业筛选：</span>
@@ -300,9 +201,26 @@
         </select>
       </div>
       <div class="two-columns">
-        <div><div id="majorPie" class="chart-box" style="height: 280px;"></div></div>
-        <div><div id="majorBar" class="chart-box" style="height: 280px;"></div></div>
+        <div>
+          <div class="chart-card" style="margin-bottom:0;">
+            <div id="majorPie" class="chart-box" style="height: 280px;"></div>
+            <div class="data-source"><i class="far fa-newspaper"></i> 数据来源：问卷调查</div>
+          </div>
+        </div>
+        <div>
+          <div class="chart-card" style="margin-bottom:0;">
+            <div id="majorBar" class="chart-box" style="height: 280px;"></div>
+            <div class="data-source"><i class="far fa-newspaper"></i> 数据来源：问卷调查</div>
+          </div>
+        </div>
       </div>
+      <!-- 嵌入图表：人群画像详细分布图 -->
+      <div class="iframe-wrapper">
+        <div class="iframe-ratio-box">
+          <iframe src="https://dycharts.com/xshow/index.html?id=c_05a943fed568c86536cd99cbc9db129e" frameborder="0" scrolling="no"></iframe>
+        </div>
+      </div>
+      <div class="img-caption">数据来源：镝数聚 · 慢就业人群专业与性别分布（交互图表）</div>
       <div class="text-card">
         <p><strong>性别分布：</strong>问卷调查样本中男女比例接近（男52.25%、女47.75%），说明性别并非决定性因素。</p>
         <p><strong>专业差异：</strong>理工类占比29.73%，文史哲类22.52%。文史哲类慢就业比例更高，可能与学科对口岗位少、考研考公倾向强有关。理工类则相对更快进入劳动力市场。</p>
@@ -310,6 +228,7 @@
       </div>
     </div>
 
+    <!-- 板块4：动因深挖 -->
     <div class="tab-content" id="tab4">
       <div class="section-title"><i class="fas fa-brain"></i> ④ 动因深挖 · 慢就业影响因素</div>
       <div class="inline-flex-row">
@@ -320,71 +239,122 @@
       </div>
       <div id="reasonContainer" style="margin: 12px 0 16px;"></div>
       <div class="two-columns">
-        <div><div id="matrixChart" class="chart-box" style="height: 260px;"></div></div>
-        <div><div id="reasonPieChart" class="chart-box" style="height: 260px;"></div></div>
+        <div>
+          <div class="chart-card" style="margin-bottom:0;">
+            <div id="matrixChart" class="chart-box" style="height: 260px;"></div>
+            <div class="data-source"><i class="far fa-newspaper"></i> 数据来源：问卷调查</div>
+          </div>
+        </div>
+        <div>
+          <div class="chart-card" style="margin-bottom:0;">
+            <div id="reasonPieChart" class="chart-box" style="height: 260px;"></div>
+            <div class="data-source"><i class="far fa-newspaper"></i> 数据来源：问卷调查</div>
+          </div>
+        </div>
       </div>
       <div class="text-card">
         <p><strong>主观与客观交织：</strong>矩阵量表显示，“单位名额太少”(4.25分)、“专业能力不足”(4.17分)、“竞争激烈”(4.05分)得分最高。62.4%的受访者认为“没规划好未来”是主因。</p>
         <p><strong>结构性矛盾：</strong>陈长胜（2025）指出，就业岗位供需失衡、专业设置与社会需求脱节、毕业生期望值过高是三大深层原因。</p>
         <p><strong>家庭支持：</strong>家庭经济支持(4.04分)为主动延迟提供了缓冲空间，42.52%的慢就业者因家庭支持而不急于工作。</p>
+        <hr class="hr-light">
+        <p>影响慢就业的因素大部分是自己想要有更高的起点，自身的职业规划，还有专业知识过时，与企业要求的不一致；市场的竞争激烈，许多人为了同一个岗位去争抢；想干的工作招聘需求人数少，不得不寻求其他岗位。</p>
+        <p>慢就业的核心支撑与现实困境。经济支撑是基础：年轻人要有一定收入来源，或靠兼职、或靠伴侣支持，能够刚好养活自己，而那些无经济收入的慢就业必然难以持续。存在明显的焦虑与限制：部分人受父母期待、择业期倒计时带来精神压力；部分人虽享受自由，却仍对未来职业发展感到迷茫，陷入“一边摸鱼一边焦虑”的状态；同时，慢就业也可能导致与社会脱节，增加后续职场融入的难度。</p>
+        <p>36氪研究院发布的“今年春招，打工人好像突然不急了？”也写出了为什么大家都不那么着急快速就业。总结出来有以下几点。</p>
+        <p>1.2026届春招的显著变化：与往年朋友圈满是入职喜报不同，今年更表现出的是观望心态，在就业这件事上不再急切，甚至显得从容，“稳”成为关键词。</p>
+        <p>2.年轻人就业心态的转变：毕业生对职业稳定性的追求变高了，报考体制内岗位的比例继续攀升，“铁饭碗”备受青睐；同时“慢就业”趋势蔓延，年轻人不急着签约入职，而是先观望、思考再做选择。</p>
+        <p>3.心态转变的核心原因：一是2026届毕业生面临就业规划的压力，且求职时遭遇企业招聘名额缩减、简历石沉大海的市场现状；二是看到往届师兄师姐的职业困境，如体制内的职业倦怠、大厂高薪却频繁被优化等，让他们对“努力就有收获”有了自己独特的认知。不愿盲目内卷、乱就业，而是选择主动思考、做出更合适的职业选择。</p>
+        <p>但是，慢就业也存在着代价：春招3-5月是企业岗位释放的集中期，岗位招满即止，盲目观望会消耗毕业生最具竞争力的求职时间；并且单纯的“等”无法让毕业生明确自己的未来职业规划方向，这也就对市场机会、自身竞争力等关键信息无法有明确的认知，毕竟单纯的“等”是等不来好的发展。</p>
       </div>
     </div>
 
+    <!-- 板块5：未就业原因 -->
     <div class="tab-content" id="tab5">
-      <div class="section-title"><i class="fas fa-hand-sparkles"></i> ⑤ 决策与行动建议</div>
-      <div class="text-card" style="background: linear-gradient(105deg, #eef3fc 0%, #ffffff 100%);">
-        <p><strong>避免两种极端：</strong>一是盲目鼓励先就业再择业，忽视岗位匹配；二是放任无限期拖延。</p>
-        <p><strong>高校层面：</strong>强化早期职业规划，动态调整学科专业，建立就业分类指导数据库，落实“一人一策”精准帮扶。</p>
-        <p><strong>个人层面：</strong>设定明确时间窗口与可量化目标（如三个月内完成技能证书），尽早树立职业理想。</p>
-        <p><strong>家庭与社会：</strong>提供容错但不纵容的支持；政府应拓展政策性岗位，优化就业信息服务，完善创业扶持政策。</p>
-      </div>
-    </div>
-
-    <div class="tab-content" id="tab6">
-      <div class="section-title"><i class="fas fa-fire"></i> ⑥ 择业关注点</div>
-      <div class="chart-card">
-        <div id="heatmap" class="chart-box"></div>
-      </div>
-      <div class="text-card">
-        <p><strong>择业因素排序：</strong>工作地点(79.28%)、发展空间(63.06%)、工作强度(62.16%)位居前三。2020年湖南调查显示，毕业生最看重“个人发展机会”“职业兴趣”和“工作地点”。</p>
-        <p><strong>薪酬期望：</strong>2020年湖南调查中，84%的毕业生不能接受月薪5000元以下，期望与现实存在差距。2023年湖南民生网调查显示，57.87%因“薪资待遇不满足要求”而慢就业。</p>
-        <p><strong>企业启示：</strong>企业需在职位规划、工作强度与地域匹配上给予更多弹性。</p>
-      </div>
-    </div>
-
-    <div class="tab-content" id="tab7">
-      <div class="section-title"><i class="fas fa-cloud-upload-alt"></i> ⑦ 未就业的具体原因</div>
+      <div class="section-title"><i class="fas fa-cloud-upload-alt"></i> ⑤ 未就业的具体原因</div>
       <div class="chart-card">
         <div id="wordCloud" class="chart-box"></div>
+        <div class="data-source"><i class="far fa-newspaper"></i> 数据来源：问卷调查（第19题）</div>
       </div>
       <div class="text-card">
         <p><strong>问卷第19题显示：</strong>个人原因(24.32%)、专业技能不足(22.52%)、创业/自由职业准备(21.62%)居前三。</p>
         <p><strong>湖南民生网2023年调查显示：</strong>57.87%因“竞争太激烈找不到满意工作”，52.76%因“逃避就业压力”，42.52%因“家庭给予充分支持”。</p>
         <p><strong>2020年湖南调查显示：</strong>40%的未就业毕业生选择“慢就业”，其中38%认为“有能力但找不到想要的工作”。</p>
-        <p><strong>对策：</strong>针对能力不足者提供培训；对创业倾向者提供孵化支持；对因健康/家庭延迟者，社会保障与灵活就业政策可减少边缘化风险。</p>
+        <p>除了以上原因外，还有来自招聘软件的乱象，许多岗位是不缺人的，但还是挂上了招人启示，说这个岗位还需要人。还有就是回复信息速度过慢，有的岗位你投递了简历，甚至要等半个月才给你答复。还有岗位招人要求和实际工作的不一致，挂上这个岗位的要求，自己刚好会一点，你觉得自己可以上手，实际上的工作岗位又是另一个你不怎么熟练的，这可能会浪费你的时间去重新学习，从而选择继续找下一个符合一点目前自己会的工作。</p>
+        <p><strong>对策：</strong>针对能力不足者提供培训；对创业倾向者提供孵化支持；对因健康/家庭延迟者，社会保障与灵活就业政策可减少边缘化风险。招聘平台应整治招聘信息的不实性，加大对岗位招人信息上架的规范力度，整顿好风气。</p>
       </div>
     </div>
 
+    <!-- 板块6：择业关注 -->
+    <div class="tab-content" id="tab6">
+      <div class="section-title"><i class="fas fa-fire"></i> ⑥ 择业关注点</div>
+      <div class="chart-card">
+        <div id="heatmap" class="chart-box"></div>
+        <div class="data-source"><i class="far fa-newspaper"></i> 数据来源：问卷调查</div>
+      </div>
+      <div class="text-card">
+        <p><strong>择业因素排序：</strong>工作地点(79.28%)、发展空间(63.06%)、工作强度(62.16%)位居前三。2020年湖南调查显示，毕业生最看重“个人发展机会”“职业兴趣”和“工作地点”。</p>
+        <p><strong>薪酬期望：</strong>2020年湖南调查中，84%的毕业生不能接受月薪5000元以下，期望与现实存在差距。2023年湖南民生网调查显示，57.87%因“薪资待遇不满足要求”而慢就业。</p>
+        <p><strong>企业启示：</strong>企业需在职位规划、工作强度与地域匹配上给予更多弹性。</p>
+        <p>对于择业关注的因素重要程度，福建省人社厅和津市市人民政府官网也发布了调查统计表并根据收集到的数据做出了对应解决的措施为大学生就业提供了建议。</p>
+      </div>
+      <!-- 嵌入图表：择业因素重要度统计表1 -->
+      <div class="iframe-wrapper">
+        <div class="iframe-ratio-box">
+          <iframe src="https://dycharts.com/xshow/index.html?id=c_67c8f7820f6c2dbd3505ebaa382b167e" frameborder="0" scrolling="no"></iframe>
+        </div>
+      </div>
+      <div class="img-caption">来源：福建省人社厅 · 择业因素重要度统计（交互图表）</div>
+      <!-- 嵌入图表：择业因素对应解决措施表2 -->
+      <div class="iframe-wrapper">
+        <div class="iframe-ratio-box">
+          <iframe src="https://dycharts.com/xshow/index.html?id=c_948634702880f58d6c23202e04a83a0b" frameborder="0" scrolling="no"></iframe>
+        </div>
+      </div>
+      <div class="img-caption">来源：津市市人民政府官网 · 择业因素对应解决措施（交互图表）</div>
+    </div>
+
+    <!-- 板块7：决策建议 -->
+    <div class="tab-content" id="tab7">
+      <div class="section-title"><i class="fas fa-hand-sparkles"></i> ⑦ 决策与行动建议</div>
+      <div class="text-card" style="background: linear-gradient(105deg, #eef3fc 0%, #ffffff 100%);">
+        <p><strong>避免两种极端：</strong>一是盲目鼓励先就业再择业，忽视岗位匹配；二是放任无限期拖延。</p>
+        <p><strong>高校层面：</strong>强化早期职业规划，动态调整学科专业，建立就业分类指导数据库，落实“一人一策”精准帮扶。</p>
+        <p><strong>个人层面：</strong>设定明确时间窗口与可量化目标（如三个月内完成技能证书），尽早树立职业理想。</p>
+        <p><strong>家庭与社会：</strong>提供容错但不纵容的支持；政府应拓展政策性岗位，优化就业信息服务，完善创业扶持政策。</p>
+        <hr class="hr-light">
+        <p>我们要对“稳”有正确的认知：多数人将“稳”等同于考公考编，但体制内岗位有限，加上竞争者不止有应届生，还有二战和三战的，竞争激烈程度并不比市场化岗位低；真正普通人可触及的“稳”，是进入治理健康、发展稳定的公司，拥有能养活自己且有余裕的薪资，这种稳是踏实做事、慢慢积累，不焦虑内耗。而不是一直拿其他的借口来表明这是自己在求稳的表现。</p>
+        <p>对于大学生来说应更好的‌利用就业服务平台‌。利用平台会提供的就业信息和机会，更好地了解市场需求和就业形势。‌参与职业规划大赛‌，不仅可以锻炼你的规划能力，还能更清晰地认识到自己的职业兴趣和方向。同时，也是一个展示自己才华和能力的机会。了解当前的就业政策‌。多关注国家和地方的就业政策，了解各种就业优惠和扶持政策。</p>
+        <p>政府应加强就业创业政策的精准宣传，利用多元媒体平台推送和解读政策；聚焦岗位挖掘和拓展，搭建政校企合作平台，开拓特色产业、新兴产业的优质岗位；创新线上线下招聘模式，全力推动毕业生实现高质量充分就业创业。</p>
+      </div>
+    </div>
+
+    <!-- 板块8：数据来源 -->
     <div class="tab-content" id="tab8">
       <div class="ref-grid">
-        <h3><i class="fas fa-book"></i> 参考文献</h3>
+        <h3><i class="fas fa-database"></i> 数据来源</h3>
         <ul class="ref-list">
-          <li>[1] 教育部. 2020届高校毕业生将达874万人[EB/OL]. (2019-11-01). http://www.moe.gov.cn/jyb_xwfb/s5147/201911/t20191101_406366.html.</li>
-          <li>[2] 教育部. 2021届全国普通高校毕业生总规模909万 同比增加35万[EB/OL]. (2021-05-13). http://www.moe.gov.cn/jyb_xwfb/xw_fbh/moe_2606/2021/tqh_210513/mtbd/202105/t20210513_531321.html.</li>
-          <li>[3] 教育部. 2022届高校毕业生规模预计1076万，同比增加167万[EB/OL]. (2021-12-28). http://www.moe.gov.cn/fbh/live/2021/53931/mtbd/202112/t20211228_590917.html.</li>
-          <li>[4] 教育部. 2023届高校毕业生规模预计1158万人 同比增加82万人[EB/OL]. (2022-11-15). http://www.moe.gov.cn/jyb_xwfb/xw_zt/moe_357/jjyzt_2022/2022_zt18/mtbd/202211/t20221116_992995.html.</li>
-          <li>[5] 教育部. 2024届高校毕业生规模预计1179万人[EB/OL]. (2024-03-14). http://www.moe.gov.cn/jyb_xwfb/xw_zt/moe_357/2024/2024_zt01/gzbs/gzbs_gzdt/202403/t20240314_1120394.html.</li>
-          <li>[6] 教育部. 2025届高校毕业生规模预计1222万人[EB/OL]. (2024-11-15). http://www.moe.gov.cn/jyb_xwfb/xw_zt/moe_357/2024/2024_zt01/gzbs/202411/t20241115_1163119.html.</li>
-          <li>[7] 教育部. 2026届高校毕业生规模预计1270万人[EB/OL]. (2025-11-20). https://www.peopleapp.com/column/30050802251-500007214114.</li>
-          <li>[8] 智联招聘. 2021大学生就业力调研报告[R/OL]. 半岛网, (2021-05-11). https://news.bandao.cn/a/498642.html.</li>
-          <li>[9] 智联招聘. 2022大学生就业力调研报告[R/OL]. 中国经济导报, (2022-05-24). https://www.ceh.com.cn/epaper/uniflows/html/2022/05/24/06/06_44.htm.</li>
-          <li>[10] 智联招聘. 2023大学生就业力报告[R/OL]. (2023). https://special.zhaopin.com/2022/shz/szqh090253/file/2023%E5%B9%B4%E5%B0%B1%E4%B8%9A%E5%8A%9B%E6%8A%A5%E5%91%8A.pdf.</li>
-          <li>[11] 智联招聘. 2024年大学生就业力调研报告[R/OL]. 新浪财经, (2024-05-20). https://t.cj.sina.com.cn/articles/view/1577794853/5e0b3d25019024vj4.</li>
-          <li>[12] 中国青年报. 调查：7成受访者周围有“慢就业”大学生[EB/OL]. (2018-08-02). https://news.haedu.cn/guonayaowen/2018/0802/1036686.html</li>
-          <li>[13] 陈长胜. 高校毕业生“慢就业”现状、成因及对策建议[EB/OL]. (2025-10-13). https://theory.dahe.cn/2025/10-13/2005376.html</li>
-          <li>[14] 龚颖, 李娜. 就业观·2023春招季：当“慢就业”遇上春招季[EB/OL]. (2023-02-16). https://www.hnmsw.com/column/show_xrp.php?ID=198153&type=jygc</li>
-          <li>[15] 中人社传媒. 2020湖南大学生就业调查报告[EB/OL]. 长沙: 湖南省民生网, (2020-06-09). http://www.lukou.gov.cn/c19354/20200609/i1522842.html</li>
+          <li>[1] 教育部. 2020届高校毕业生将达874万人. (2019-11-01). <a href="http://www.moe.gov.cn/jyb_xwfb/s5147/201911/t20191101_406366.html" target="_blank" rel="noopener noreferrer">http://www.moe.gov.cn/jyb_xwfb/s5147/201911/t20191101_406366.html</a>.</li>
+          <li>[2] 教育部. 2021届全国普通高校毕业生总规模909万 同比增加35万. (2021-05-13). <a href="http://www.moe.gov.cn/jyb_xwfb/xw_fbh/moe_2606/2021/tqh_210513/mtbd/202105/t20210513_531321.html" target="_blank" rel="noopener noreferrer">http://www.moe.gov.cn/jyb_xwfb/xw_fbh/moe_2606/2021/tqh_210513/mtbd/202105/t20210513_531321.html</a>.</li>
+          <li>[3] 教育部. 2022届高校毕业生规模预计1076万，同比增加167万. (2021-12-28). <a href="http://www.moe.gov.cn/fbh/live/2021/53931/mtbd/202112/t20211228_590917.html" target="_blank" rel="noopener noreferrer">http://www.moe.gov.cn/fbh/live/2021/53931/mtbd/202112/t20211228_590917.html</a>.</li>
+          <li>[4] 教育部. 2023届高校毕业生规模预计1158万人 同比增加82万人. (2022-11-15). <a href="http://www.moe.gov.cn/jyb_xwfb/xw_zt/moe_357/jjyzt_2022/2022_zt18/mtbd/202211/t20221116_992995.html" target="_blank" rel="noopener noreferrer">http://www.moe.gov.cn/jyb_xwfb/xw_zt/moe_357/jjyzt_2022/2022_zt18/mtbd/202211/t20221116_992995.html</a>.</li>
+          <li>[5] 教育部. 2024届高校毕业生规模预计1179万人. (2024-03-14). <a href="http://www.moe.gov.cn/jyb_xwfb/xw_zt/moe_357/2024/2024_zt01/gzbs/gzbs_gzdt/202403/t20240314_1120394.html" target="_blank" rel="noopener noreferrer">http://www.moe.gov.cn/jyb_xwfb/xw_zt/moe_357/2024/2024_zt01/gzbs/gzbs_gzdt/202403/t20240314_1120394.html</a>.</li>
+          <li>[6] 教育部. 2025届高校毕业生规模预计1222万人. (2024-11-15). <a href="http://www.moe.gov.cn/jyb_xwfb/xw_zt/moe_357/2024/2024_zt01/gzbs/202411/t20241115_1163119.html" target="_blank" rel="noopener noreferrer">http://www.moe.gov.cn/jyb_xwfb/xw_zt/moe_357/2024/2024_zt01/gzbs/202411/t20241115_1163119.html</a>.</li>
+          <li>[7] 教育部. 2026届高校毕业生规模预计1270万人. (2025-11-20). <a href="https://www.peopleapp.com/column/30050802251-500007214114" target="_blank" rel="noopener noreferrer">https://www.peopleapp.com/column/30050802251-500007214114</a>.</li>
+          <li>[8] 智联招聘. 2021大学生就业力调研报告. 半岛网, (2021-05-11). <a href="https://news.bandao.cn/a/498642.html" target="_blank" rel="noopener noreferrer">https://news.bandao.cn/a/498642.html</a>.</li>
+          <li>[9] 智联招聘. 2022大学生就业力调研报告. 中国经济导报, (2022-05-24). <a href="https://www.ceh.com.cn/epaper/uniflows/html/2022/05/24/06/06_44.htm" target="_blank" rel="noopener noreferrer">https://www.ceh.com.cn/epaper/uniflows/html/2022/05/24/06/06_44.htm</a>.</li>
+          <li>[10] 智联招聘. 2023大学生就业力报告. (2023). <a href="https://special.zhaopin.com/2022/shz/szqh090253/file/2023%E5%B9%B4%E5%B0%B1%E4%B8%9A%E5%8A%9B%E6%8A%A5%E5%91%8A.pdf" target="_blank" rel="noopener noreferrer">https://special.zhaopin.com/2022/shz/szqh090253/file/2023%E5%B9%B4%E5%B0%B1%E4%B8%9A%E5%8A%9B%E6%8A%A5%E5%91%8A.pdf</a>.</li>
+          <li>[11] 智联招聘. 2024年大学生就业力调研报告. 新浪财经, (2024-05-20). <a href="https://t.cj.sina.com.cn/articles/view/1577794853/5e0b3d25019024vj4" target="_blank" rel="noopener noreferrer">https://t.cj.sina.com.cn/articles/view/1577794853/5e0b3d25019024vj4</a>.</li>
+          <li>[12] 河南教育新闻网. 调查：7成受访者周围有“慢就业”大学生. (2018-08-02). <a href="https://news.haedu.cn/guonayaowen/2018/0802/1036686.html" target="_blank" rel="noopener noreferrer">https://news.haedu.cn/guonayaowen/2018/0802/1036686.html</a></li>
+          <li>[13] 陈长胜. 高校毕业生“慢就业”现状、成因及对策建议. (2025-10-13). <a href="https://theory.dahe.cn/2025/10-13/2005376.html" target="_blank" rel="noopener noreferrer">https://theory.dahe.cn/2025/10-13/2005376.html</a></li>
+          <li>[14] 龚颖, 李娜. 就业观·2023春招季：当“慢就业”遇上春招季. (2023-02-16). <a href="https://www.hnmsw.com/column/show_xrp.php?ID=198153&type=jygc" target="_blank" rel="noopener noreferrer">https://www.hnmsw.com/column/show_xrp.php?ID=198153&type=jygc</a></li>
+          <li>[15] 中人社传媒. 2020湖南大学生就业调查报告. 长沙: 湖南省民生网, (2020-06-09). <a href="http://www.lukou.gov.cn/c19354/20200609/i1522842.html" target="_blank" rel="noopener noreferrer">http://www.lukou.gov.cn/c19354/20200609/i1522842.html</a></li>
+          <li>[16] 镝数聚 毕业生就业选择更多元 自由职业和慢就业占比翻倍. <a href="https://www.dydata.io/dychart/detail/164610652030067909/" target="_blank" rel="noopener noreferrer">https://www.dydata.io/dychart/detail/164610652030067909/</a></li>
+          <li>[17] 36氪研究院 <a href="https://36kr.com/p/3740727796563969" target="_blank" rel="noopener noreferrer">https://36kr.com/p/3740727796563969</a></li>
+          <li>[18] 福建省人社厅官网 <a href="https://rst.fujian.gov.cn/wz/wsdc/detail.htm?id=25112&type=1" target="_blank" rel="noopener noreferrer">https://rst.fujian.gov.cn/wz/wsdc/detail.htm?id=25112&type=1</a></li>
+          <li>[19] 津市市人民政府官网 <a href="https://www.jinshishi.gov.cn/zmhd/jgfk/content_78178478" target="_blank" rel="noopener noreferrer">https://www.jinshishi.gov.cn/zmhd/jgfk/content_78178478</a></li>
+          <li>[20] 问卷调查 <a href="https://v.wjx.cn/vm/wF7MhLf.aspx#" target="_blank" rel="noopener noreferrer">https://v.wjx.cn/vm/wF7MhLf.aspx#</a></li>
+          <li>[21] 公开报道资料</li>
         </ul>
+        <div class="team-info">团队成员：简朝隆 &nbsp;|&nbsp; 指导教师：申思奇</div>
       </div>
     </div>
   </div>
@@ -467,7 +437,7 @@ window.onload = function() {
     safeResize(majorBar);
   });
 
-  // 动因列表
+  // 动因列表 - 改用进度条样式
   const reasonRaw = [
     { label:'就业市场竞争太激烈', value:4.05 },{ label:'想去的单位名额太少', value:4.25 },{ label:'专业能力不够想再学习', value:4.17 },
     { label:'家庭经济支持/缓冲期', value:4.04 },{ label:'学校教的和企业要求不一样', value:4.05 },{ label:'职业规划不清晰', value:3.94 },
@@ -479,7 +449,7 @@ window.onload = function() {
   function renderReasonList() {
     let filtered=reasonRaw.filter(i=>i.value>=currentThres);
     filtered.sort((a,b)=>currentSort==='desc'?b.value-a.value:a.value-b.value);
-    reasonContainer.innerHTML=filtered.map(r=>`<div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;"><span><strong>${r.label}</strong></span><span>${r.value}分</span></div><div style="background:#e2eaf5;border-radius:20px;overflow:hidden;margin-top:4px;"><div style="width:${(r.value/5)*100}%;background:#2c7cb6;height:22px;line-height:22px;padding-left:8px;color:white;font-size:0.7rem;">${r.value}分</div></div></div>`).join('');
+    reasonContainer.innerHTML=filtered.map(r=>`<div class="progress-item"><div class="progress-label"><span><strong>${r.label}</strong></span><span>${r.value}分</span></div><div class="progress-bar-bg"><div class="progress-fill" style="width:${(r.value/5)*100}%;">${r.value}分</div></div></div>`).join('');
   }
   renderReasonList();
 
@@ -565,7 +535,7 @@ window.onload = function() {
     }] 
   });
 
-  // 标签切换
+  // 选项卡切换功能
   const tabItems = document.querySelectorAll('.tab-item');
   const tabContents = document.querySelectorAll('.tab-content');
   tabItems.forEach(tab => {
