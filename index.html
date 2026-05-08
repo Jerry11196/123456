@@ -177,7 +177,7 @@
       <div style="margin: 1.2rem 0; overflow-x: auto; overflow-y: auto; -webkit-overflow-scrolling: touch; background: #f9fbfd; border-radius: 1rem; border: 1px solid #e9f0f5; padding: 0;">
         <iframe src="https://dycharts.com/xshow/index.html?id=c_05a943fed568c86536cd99cbc9db129e" width="800" height="700" scrolling="no" frameborder="0" style="display: block; margin: 0 auto;"></iframe>
       </div>
-      <div class="img-caption">数据来源：镝数聚 · 慢就业人群专业与性别分布</div>
+      
       <div class="text-card">
         <p><strong>性别分布：</strong>问卷调查样本中男女比例接近（男52.25%、女47.75%），说明性别并非决定性因素。</p>
         <p><strong>专业差异：</strong>理工类占比29.73%，文史哲类22.52%。文史哲类慢就业比例更高，可能与学科对口岗位少、考研考公倾向强有关。理工类则相对更快进入劳动力市场。</p>
@@ -670,13 +670,13 @@ window.onload = function() {
     this.classList.add('active');
     document.getElementById('sortAscBtn').classList.remove('active');
     updateReasonCharts(Number(document.getElementById('thresholdSlider').value), 'desc');
-  });
+  });            
 
   document.getElementById('sortAscBtn').addEventListener('click', function() {
     this.classList.add('active');
     document.getElementById('sortDescBtn').classList.remove('active');
     updateReasonCharts(Number(document.getElementById('thresholdSlider').value), 'asc');
-  });
+  });          
 
   document.querySelectorAll('.tab-item').forEach(item => {
     item.addEventListener('click', function() {
@@ -685,12 +685,12 @@ window.onload = function() {
       this.classList.add('active');
       const tabId = this.getAttribute('data-tab');
       document.getElementById(tabId).classList.add('active');
-      resizeCharts();
-    });
-  });
+      resizeCharts();          
+    });          
+  });          
 
   window.addEventListener('resize', resizeCharts);
-};
-</script>
-</body>
-</html>
+};          
+</script>          
+</body>          
+</html>          
